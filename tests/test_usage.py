@@ -26,7 +26,8 @@ def test_parses_claude_code_fixture(claude_lines: list[str]) -> None:
     assert usage == Usage(
         uncached_input_tokens=4,
         cache_read_tokens=42419,
-        cache_write_tokens=9249,
+        cache_write_5m_tokens=0,
+        cache_write_1h_tokens=9249,
         output_tokens=119,
         reasoning_tokens=0,
     )
@@ -40,7 +41,8 @@ def test_parses_codex_fixture(codex_lines: list[str]) -> None:
     assert usage == Usage(
         uncached_input_tokens=6090,
         cache_read_tokens=56320,
-        cache_write_tokens=0,
+        cache_write_5m_tokens=0,
+        cache_write_1h_tokens=0,
         output_tokens=281,
         reasoning_tokens=9,
     )
@@ -57,7 +59,8 @@ def test_parses_final_turn_of_codex_two_turn_fixture() -> None:
     assert usage == Usage(
         uncached_input_tokens=1741,
         cache_read_tokens=14080,
-        cache_write_tokens=0,
+        cache_write_5m_tokens=0,
+        cache_write_1h_tokens=0,
         output_tokens=6,
         reasoning_tokens=0,
     )
@@ -77,7 +80,7 @@ def test_truncated_stream_returns_zero_usage(
     lines = (FIXTURES / fixture_name).read_text().splitlines()[:-1]
     usage, _ = parser(lines)  # type: ignore[operator]
 
-    assert usage == Usage(0, 0, 0, 0, 0)
+    assert usage == Usage(0, 0, 0, 0, 0, 0)
 
 
 @pytest.mark.parametrize(
@@ -86,12 +89,12 @@ def test_truncated_stream_returns_zero_usage(
         (
             parse_claude_code_usage,
             "claude_code_stream.jsonl",
-            Usage(4, 42419, 9249, 119, 0),
+            Usage(4, 42419, 0, 9249, 119, 0),
         ),
         (
             parse_codex_usage,
             "codex_stream.jsonl",
-            Usage(6090, 56320, 0, 281, 9),
+            Usage(6090, 56320, 0, 0, 281, 9),
         ),
     ],
 )

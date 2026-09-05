@@ -13,12 +13,13 @@ class Usage:
 
     uncached_input_tokens: int
     cache_read_tokens: int
-    cache_write_tokens: int
+    cache_write_5m_tokens: int
+    cache_write_1h_tokens: int
     output_tokens: int
     reasoning_tokens: int
 
 
-_ZERO_USAGE = Usage(0, 0, 0, 0, 0)
+_ZERO_USAGE = Usage(0, 0, 0, 0, 0, 0)
 
 
 def _records(lines: list[str]) -> list[dict[str, Any]]:
@@ -61,9 +62,8 @@ def parse_claude_code_usage(lines: list[str]) -> tuple[Usage, str | None]:
             Usage(
                 uncached_input_tokens=_int_value(raw_usage, "input_tokens"),
                 cache_read_tokens=_int_value(raw_usage, "cache_read_input_tokens"),
-                cache_write_tokens=_int_value(
-                    raw_usage, "cache_creation_input_tokens"
-                ),
+                cache_write_5m_tokens=_cache_creation_tokens(raw_usage, "5m"),
+                cache_write_1h_tokens=_cache_creation_tokens(raw_usage, "1h"),
                 output_tokens=_int_value(raw_usage, "output_tokens"),
                 reasoning_tokens=_thinking_tokens(raw_usage),
             ),
@@ -98,7 +98,12 @@ def parse_codex_usage(lines: list[str]) -> tuple[Usage, str | None]:
         usage = Usage(
             uncached_input_tokens=max(0, total_input - cache_read),
             cache_read_tokens=cache_read,
-            cache_write_tokens=_int_value(raw_usage, "cache_write_input_tokens"),
+            # Codex exposes one cache-write count. Its 1.25x input rate is
+            # normalised as a 5-minute cache write.
+            cache_write_5m_tokens=_int_value(
+                raw_usage, "cache_write_input_tokens"
+            ),
+            cache_write_1h_tokens=0,
             output_tokens=_int_value(raw_usage, "output_tokens"),
             reasoning_tokens=_int_value(raw_usage, "reasoning_output_tokens"),
         )
@@ -111,3 +116,10 @@ def _thinking_tokens(raw_usage: dict[str, Any]) -> int:
     if not isinstance(details, dict):
         return 0
     return _int_value(details, "thinking_tokens")
+
+
+def _cache_creation_tokens(raw_usage: dict[str, Any], duration: str) -> int:
+    cache_creation = raw_usage.get("cache_creation")
+    if not isinstance(cache_creation, dict):
+        return 0
+    return _int_value(cache_creation, f"ephemeral_{duration}_input_tokens")
