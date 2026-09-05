@@ -77,6 +77,7 @@ def parse_codex_usage(lines: list[str]) -> tuple[Usage, str | None]:
     """Parse Codex's completed-turn usage record and thread identifier."""
 
     thread_id: str | None = None
+    usage = _ZERO_USAGE
     for record in _records(lines):
         if record.get("type") == "thread.started":
             candidate_thread_id = record.get("thread_id")
@@ -92,21 +93,17 @@ def parse_codex_usage(lines: list[str]) -> tuple[Usage, str | None]:
         total_input = _int_value(raw_usage, "input_tokens")
         cache_read = _int_value(raw_usage, "cached_input_tokens")
         # Codex's cached input is a subset of input_tokens, so subtract it.
-        # Unknown: this fixture has one captured turn, so it cannot show
-        # whether completed-turn usage is per-turn or cumulative. A multi-turn
-        # capture is required before summing this value across turns.
-        return (
-            Usage(
-                uncached_input_tokens=max(0, total_input - cache_read),
-                cache_read_tokens=cache_read,
-                cache_write_tokens=_int_value(raw_usage, "cache_write_input_tokens"),
-                output_tokens=_int_value(raw_usage, "output_tokens"),
-                reasoning_tokens=_int_value(raw_usage, "reasoning_output_tokens"),
-            ),
-            thread_id,
+        # Completed-turn usage is per-turn, not session-cumulative. The clean
+        # two-turn fixture records 6 output tokens for each turn, not 12.
+        usage = Usage(
+            uncached_input_tokens=max(0, total_input - cache_read),
+            cache_read_tokens=cache_read,
+            cache_write_tokens=_int_value(raw_usage, "cache_write_input_tokens"),
+            output_tokens=_int_value(raw_usage, "output_tokens"),
+            reasoning_tokens=_int_value(raw_usage, "reasoning_output_tokens"),
         )
 
-    return _ZERO_USAGE, thread_id
+    return usage, thread_id
 
 
 def _thinking_tokens(raw_usage: dict[str, Any]) -> int:

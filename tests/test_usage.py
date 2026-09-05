@@ -49,6 +49,21 @@ def test_parses_codex_fixture(codex_lines: list[str]) -> None:
     assert session_id == "01a0712e-5dcf-7f60-a4b9-8a9eaa1d20ef"
 
 
+def test_parses_final_turn_of_codex_two_turn_fixture() -> None:
+    lines = (FIXTURES / "codex_two_turn_stream.jsonl").read_text().splitlines()
+
+    usage, session_id = parse_codex_usage(lines)
+
+    assert usage == Usage(
+        uncached_input_tokens=1741,
+        cache_read_tokens=14080,
+        cache_write_tokens=0,
+        output_tokens=6,
+        reasoning_tokens=0,
+    )
+    assert session_id == "01a073d6-e5c2-7a12-8335-a27fb60c1161"
+
+
 @pytest.mark.parametrize(
     ("parser", "fixture_name"),
     [
