@@ -39,11 +39,7 @@ fixture.
 two-turn fixture and assert turn-two usage against literal values you read
 out of it yourself, so the semantics stay pinned even if you misremember.
 
----
-
-## Next
-
-### 4. Cost function
+### 4. Cost function ✅
 Pure function: `Usage` plus a model identifier to an API-equivalent dollar
 figure. Prices live in one versioned table; every future log line records
 which version priced it, so numbers can be recomputed when rates change.
@@ -64,7 +60,9 @@ Getting this wrong is the single most consequential silent bug in the project.
 7. The pricing version is returned alongside the figure so a log line can
    record what priced it.
 
-**Done when:** those tests pass.
+---
+
+## Next
 
 ### 5. `run_agent()`
 One function, one harness (Claude Code only). Signature roughly:
