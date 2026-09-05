@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
-"""Capture a Claude Code stream-json response without modifying stdout."""
+"""Capture a coding-agent JSONL response without modifying stdout."""
 
 from __future__ import annotations
 
 import argparse
+import shlex
 import subprocess
 import sys
 import threading
@@ -18,6 +19,12 @@ def copy_stderr(source: object, destination: Path) -> None:
 
 def main() -> int:
     parser = argparse.ArgumentParser()
+    parser.add_argument("--binary", default="claude")
+    parser.add_argument(
+        "--flags",
+        default="--print --output-format stream-json --verbose --permission-mode bypassPermissions",
+        help="shell-style flags to pass to the CLI",
+    )
     parser.add_argument("prompt")
     parser.add_argument("output_path", type=Path)
     args = parser.parse_args()
@@ -26,13 +33,8 @@ def main() -> int:
     stderr_path = args.output_path.with_name(args.output_path.name + ".stderr")
     process = subprocess.Popen(
         [
-            "claude",
-            "--print",
-            "--output-format",
-            "stream-json",
-            "--verbose",
-            "--permission-mode",
-            "bypassPermissions",
+            args.binary,
+            *shlex.split(args.flags),
             args.prompt,
         ],
         stdout=subprocess.PIPE,

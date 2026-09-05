@@ -1,0 +1,11 @@
+{"type":"thread.started","thread_id":"01a0712e-5dcf-7f60-a4b9-8a9eaa1d20ef"}
+{"type":"turn.started"}
+{"type":"item.completed","item":{"id":"item_0","type":"agent_message","text":"I’ll create the requested text file and verify its contents."}}
+{"type":"item.started","item":{"id":"item_1","type":"command_execution","command":"/bin/zsh -lc \"pwd && rg --files -g 'greeting.txt' && sed -n '1,5p' greeting.txt || true\"","aggregated_output":"","exit_code":null,"status":"in_progress"}}
+{"type":"item.completed","item":{"id":"item_1","type":"command_execution","command":"/bin/zsh -lc \"pwd && rg --files -g 'greeting.txt' && sed -n '1,5p' greeting.txt || true\"","aggregated_output":"/private/tmp/codex-stream-capture.lqg6NM\n","exit_code":0,"status":"completed"}}
+{"type":"item.started","item":{"id":"item_2","type":"file_change","changes":[{"path":"/private/tmp/codex-stream-capture.lqg6NM/greeting.txt","kind":"add"}],"status":"in_progress"}}
+{"type":"item.completed","item":{"id":"item_2","type":"file_change","changes":[{"path":"/private/tmp/codex-stream-capture.lqg6NM/greeting.txt","kind":"add"}],"status":"completed"}}
+{"type":"item.started","item":{"id":"item_3","type":"command_execution","command":"/bin/zsh -lc \"sed -n '1p' greeting.txt\"","aggregated_output":"","exit_code":null,"status":"in_progress"}}
+{"type":"item.completed","item":{"id":"item_3","type":"command_execution","command":"/bin/zsh -lc \"sed -n '1p' greeting.txt\"","aggregated_output":"hello\n","exit_code":0,"status":"completed"}}
+{"type":"item.completed","item":{"id":"item_4","type":"agent_message","text":"Created [greeting.txt](/private/tmp/codex-stream-capture.lqg6NM/greeting.txt) containing `hello`."}}
+{"type":"turn.completed","usage":{"input_tokens":62410,"cached_input_tokens":56320,"cache_write_input_tokens":0,"output_tokens":281,"reasoning_output_tokens":9}}
