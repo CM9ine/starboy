@@ -25,11 +25,7 @@ plus a written comparison of their formats.
 session id. Codex requires subtracting its cached figure from its total;
 Claude does not.
 
----
-
-## Next
-
-### 3.5. Two-turn capture
+### 3.5. Two-turn capture ✅
 **Why:** the parsers carry an unresolved note about whether usage is per-turn
 or cumulative. If cumulative and later summed per turn, totals inflate badly.
 Blocks task 4.
@@ -43,8 +39,9 @@ fixture.
 two-turn fixture and assert turn-two usage against literal values you read
 out of it yourself, so the semantics stay pinned even if you misremember.
 
-**Done when:** the question is answered in writing for at least one CLI, with
-the fixture as evidence.
+---
+
+## Next
 
 ### 4. Cost function
 Pure function: `Usage` plus a model identifier to an API-equivalent dollar
@@ -147,6 +144,14 @@ and open the PR regardless — no repair yet. The point is to watch it disagree.
 
 ### 13. Envelope retry
 Reask once on unparseable JSON, then treat as not approved. No correction loop.
+
+### 14.5 Two-turn capture, Claude Code
+Same question task 3.5 answered for Codex: is reported usage per-turn or
+cumulative across a session? Unknown for Claude Code. The repair loop sends
+multiple turns through one session and sums their usage, so summing cumulative
+figures would inflate a four-turn run's cost by roughly 2.5x, silently and
+plausibly. Capture two turns in a fresh directory, compare output counts
+between turns, record the answer in `usage.py` and `CONTEXT.md`.
 
 ### 14. Repair loop
 Findings back to the builder. Cap of 3. The cap is a failsafe, not the

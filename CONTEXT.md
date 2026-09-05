@@ -85,9 +85,10 @@ plausible.
 **The Claude fixture was captured warm.** Its 4 uncached input tokens are not
 representative of a real cold run. See the note in `tests/test_usage.py`.
 
-**Unresolved:** whether usage records are per-turn or cumulative across a
-session, for either CLI. Marked in `usage.py`. Settle it before anything sums
-usage across turns.
+**Usage records:** Codex reports per-turn usage, evidenced by
+`tests/fixtures/codex_two_turn_stream.jsonl`. Whether Claude Code reports
+per-turn or cumulative usage remains unresolved. Do not sum Claude Code usage
+across turns until this is settled in `usage.py`.
 
 **Tool calls are not comparable across harnesses without a folding rule.**
 Claude links `tool_use` to `tool_result` by id. Codex emits

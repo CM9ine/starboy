@@ -93,8 +93,8 @@ def parse_codex_usage(lines: list[str]) -> tuple[Usage, str | None]:
         total_input = _int_value(raw_usage, "input_tokens")
         cache_read = _int_value(raw_usage, "cached_input_tokens")
         # Codex's cached input is a subset of input_tokens, so subtract it.
-        # Completed-turn usage is per-turn, not session-cumulative. The clean
-        # two-turn fixture records 6 output tokens for each turn, not 12.
+        # Completed-turn usage is per-turn, not session-cumulative: the clean
+        # two-turn fixture reports 6 output tokens for both turns, not 12 on turn two.
         usage = Usage(
             uncached_input_tokens=max(0, total_input - cache_read),
             cache_read_tokens=cache_read,
