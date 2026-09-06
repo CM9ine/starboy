@@ -80,8 +80,14 @@ end-to-end parsing of a saved fixture into `(text, Usage, session_id)`.
 ## Next
 
 ### 6. JSONL logger
-One line appended per agent call: run id, issue, phase, harness, model, the
-token counts, cost, pricing version, seconds, outcome.
+`run_agent()` returns an `AgentResult`; it does not know workflow identifiers
+or write logs. A separate logger appends one line per call: run id, nullable
+issue, phase, monotonic sequence, requested harness/model, resolved model,
+the token counts, cost, pricing version, seconds, and outcome.
+
+`AgentCallContext` owns caller-known workflow and requested-model facts.
+`run_agent_logged()` is the thin composition that calls `run_agent()` and then
+`log_agent_call()`.
 
 A field not recorded cannot be recovered. Err toward recording.
 
