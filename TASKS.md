@@ -75,11 +75,7 @@ call, such that the number means the same thing for both CLIs later.
 parts that do not: command construction for a given model and prompt, and
 end-to-end parsing of a saved fixture into `(text, Usage, session_id)`.
 
----
-
-## Next
-
-### 6. JSONL logger
+### 6. JSONL logger ✅
 `run_agent()` returns an `AgentResult`; it does not know workflow identifiers
 or write logs. A separate logger appends one line per call: run id, nullable
 issue, phase, monotonic sequence, requested harness/model, resolved model,
@@ -98,7 +94,9 @@ A field not recorded cannot be recovered. Err toward recording.
 3. A `Usage` with zero values still writes all its fields — nothing is
    silently omitted for being falsy.
 
-**Done when:** a `run_agent` call leaves a complete line on disk.
+---
+
+## Next
 
 ### 7. Worktree isolation
 Context manager: branch off main into a scratch git worktree, clean up after.
