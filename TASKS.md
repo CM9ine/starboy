@@ -97,14 +97,12 @@ A field not recorded cannot be recovered. Err toward recording.
 ### 7. Worktree isolation ✅
 Context manager: branch off main into a scratch git worktree, clean up after.
 
+### 8. Issue reader ✅
+Thin `gh` CLI wrapper. Fetch an issue's title and body.
+
 ---
 
 ## Next
-
-### 8. Issue reader
-Thin `gh` CLI wrapper. Fetch an issue's title and body.
-
-**Done when:** you can print a real issue.
 
 ### 9. Planner phase
 Issue in, spec file written to `specs/`, acceptance criteria out.

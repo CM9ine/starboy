@@ -1,6 +1,7 @@
 import typer
 
 import starboy
+from starboy.issue import read_issue
 
 app = typer.Typer()
 
@@ -18,3 +19,11 @@ def main(
     ),
 ) -> None:
     pass
+
+
+@app.command()
+def issue(number: int) -> None:
+    """Print a GitHub issue's title and body."""
+
+    fetched_issue = read_issue(number)
+    typer.echo(f"{fetched_issue.title}\n\n{fetched_issue.body}")
