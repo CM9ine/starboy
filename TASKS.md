@@ -100,18 +100,34 @@ Context manager: branch off main into a scratch git worktree, clean up after.
 ### 8. Issue reader ✅
 Thin `gh` CLI wrapper. Fetch an issue's title and body.
 
----
-
-## Next
-
-### 9. Planner phase
+### 9. Planner phase ✅
 Issue in, spec file written to `specs/`, acceptance criteria out.
 
 The planner exists to give the review loop a termination condition. Without
 written criteria, "approved" means whatever the reviewer's taste says today,
 and taste is unbounded.
 
-**Done when:** a real issue produces a spec you would accept.
+---
+
+## Next
+
+### 9.5. Planner clarification gate
+Do not let a vague issue turn into an invented product decision. The planner
+must be able to return `needs_clarification` with concrete questions instead
+of a ready spec. In that case, post the questions as a comment on the source
+GitHub issue and stop; do not create a builder handoff.
+
+The planner's result needs an explicit, machine-readable ready-or-clarification
+disposition so this is a workflow decision, not a guess made by parsing prose.
+The Markdown spec remains the handoff only for a ready result.
+
+**Tests:**
+1. A clarification result posts its literal questions to the matching issue.
+2. A clarification result does not write a spec or invoke the builder.
+3. A ready result does not post a clarification comment.
+
+**Done when:** an underspecified real issue receives useful questions and the
+factory stops without creating a spec or starting implementation.
 
 ### 10. Builder phase
 Spec in, code changed in the worktree. No review yet.

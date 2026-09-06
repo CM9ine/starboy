@@ -1,7 +1,10 @@
+from pathlib import Path
+
 import typer
 
 import starboy
 from starboy.issue import read_issue
+from starboy.planner import plan_issue
 
 app = typer.Typer()
 
@@ -27,3 +30,10 @@ def issue(number: int) -> None:
 
     fetched_issue = read_issue(number)
     typer.echo(f"{fetched_issue.title}\n\n{fetched_issue.body}")
+
+
+@app.command()
+def plan(number: int) -> None:
+    """Write an implementation spec for a GitHub issue."""
+
+    typer.echo(plan_issue(number, Path.cwd()))
