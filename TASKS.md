@@ -60,11 +60,7 @@ Getting this wrong is the single most consequential silent bug in the project.
 7. The pricing version is returned alongside the figure so a log line can
    record what priced it.
 
----
-
-## Next
-
-### 5. `run_agent()`
+### 5. `run_agent()` ✅
 One function, one harness (Claude Code only). Signature roughly:
 `run_agent(harness, model, prompt, cwd) -> (text, Usage, session_id)`.
 
@@ -79,8 +75,9 @@ call, such that the number means the same thing for both CLIs later.
 parts that do not: command construction for a given model and prompt, and
 end-to-end parsing of a saved fixture into `(text, Usage, session_id)`.
 
-**Done when:** a real agent call from Python returns text and correctly
-parsed usage.
+---
+
+## Next
 
 ### 6. JSONL logger
 One line appended per agent call: run id, issue, phase, harness, model, the
