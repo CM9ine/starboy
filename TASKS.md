@@ -94,14 +94,12 @@ A field not recorded cannot be recovered. Err toward recording.
 3. A `Usage` with zero values still writes all its fields — nothing is
    silently omitted for being falsy.
 
+### 7. Worktree isolation ✅
+Context manager: branch off main into a scratch git worktree, clean up after.
+
 ---
 
 ## Next
-
-### 7. Worktree isolation
-Context manager: branch off main into a scratch git worktree, clean up after.
-
-**Done when:** two concurrent runs do not collide.
 
 ### 8. Issue reader
 Thin `gh` CLI wrapper. Fetch an issue's title and body.
